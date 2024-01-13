@@ -1,7 +1,9 @@
 from tortoise.models import Model
 from tortoise import fields
 from tortoise.manager import Manager
-
+from tortoise import Tortoise
+import asyncio
+from tortoise import run_async
 
 class SoftDeleteManager(Manager):
     def get_queryset(self):
@@ -10,7 +12,7 @@ class SoftDeleteManager(Manager):
 
 class BaseModel(Model):
     created_at = fields.DatetimeField(auto_now=True)
-    update_at = fields.DatetimeField(auto_now_add=True)
+    updated_at = fields.DatetimeField(auto_now_add=True)
     deleted_at = fields.DatetimeField(default=None)
     all_obj = Manager()
 
@@ -47,4 +49,18 @@ class Hospital(BaseModel):
 
     class Meta:
         ordering = ['-created_at']
-        indexes = ('person', 'stauts')
+        indexes = ('person', 'status')
+
+
+async def init_db():
+    await Tortoise.init(
+        db_url='sqlite://db.sqlite3',
+        modules={'models': ['models']}
+    )
+
+    await Tortoise.generate_schemas()
+
+# await init()
+# func = init()
+# asyncio.run(func)
+# run_async(init_db())
