@@ -5,6 +5,7 @@ from tortoise import Tortoise
 import asyncio
 from tortoise import run_async
 
+
 class SoftDeleteManager(Manager):
     def get_queryset(self):
         return super(SoftDeleteManager, self).get_queryset().filter(deleted_at__isnull=True)
@@ -40,7 +41,6 @@ class Hospital(BaseModel):
         Full insurance
         health insurance
         no insurance
-
     """
     id = fields.IntField(pk=True)
     plan_name = fields.CharField(max_length=255)
