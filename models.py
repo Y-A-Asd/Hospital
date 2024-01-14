@@ -4,6 +4,8 @@ from tortoise.manager import Manager
 from tortoise import Tortoise
 import asyncio
 from tortoise import run_async
+from tortoise.contrib.pydantic import pydantic_model_creator
+
 
 TORTOISE_ORM = {
     "connections": {"default": "sqlite://db.sqlite3"},
@@ -24,7 +26,7 @@ class SoftDeleteManager(Manager):
 class BaseModel(Model):
     created_at = fields.DatetimeField(auto_now=True)
     updated_at = fields.DatetimeField(auto_now_add=True)
-    deleted_at = fields.DatetimeField(default=None)
+    deleted_at = fields.DatetimeField(default=None, null=True)
     all_obj = Manager()
 
     class Meta:
@@ -45,7 +47,9 @@ class Patient(BaseModel):
         indexes = ('id', 'name')
 
     def __str__(self):
-        return self.name
+        return f'Name: {self.name} - age: {self.age} gender: {self.gender}'
+
+Patient_Pydantic = pydantic_model_creator(Patient, name='Patient')
 
 
 class Hospital(BaseModel):
@@ -64,6 +68,7 @@ class Hospital(BaseModel):
         ordering = ['-created_at']
         indexes = ('person', 'status')
 
+Hospital_Pydantic = pydantic_model_creator(Hospital, name='Hospital')
 
 async def init_db():
 

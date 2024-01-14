@@ -1,0 +1,93 @@
+Transition: None -> <__main__.Enter object at 0x7fa85e2cae10>
+Charging in state <__main__.Enter object at 0x7fa85e2cae10>
+Transition: None -> <__main__.Enter object at 0x7f6610fe4d10>
+Charging in state <__main__.Enter object at 0x7f6610fe4d10>
+Patient Info: <__main__.Context object at 0x7f6610fe5a50>
+Transition: <__main__.Enter object at 0x7f6610fe4d10> -> <__main__.Charged object at 0x7f6610fe4750>
+Dischargin in state <__main__.Charged object at 0x7f6610fe4750>
+Transition: <__main__.Charged object at 0x7f6610fe4750> -> <__main__.Discharged object at 0x7f6610fe4d10>
+Transition: None -> Enter State
+Charging in state Enter State
+Patient Info: <__main__.Context object at 0x7f4d88adfc10>
+Transition: Enter State -> <__main__.Charged object at 0x7f4d899bf050>
+Dischargin in state <__main__.Charged object at 0x7f4d899bf050>
+Transition: <__main__.Charged object at 0x7f4d899bf050> -> <__main__.Discharged object at 0x7f4d88b48d10>
+Transition: None -> Enter State
+Charging in state Enter State
+Patient Info: <__main__.Context object at 0x7f23a7f844d0>
+Transition: Enter State -> Charged State
+Dischargin in state Charged State
+Transition: Charged State -> Discharged State
+Transition: None -> Enter State
+Patient Info: <__main__.Context object at 0x7f71d53fd710>
+Charging in state Enter State
+Transition: Enter State -> Charged State
+Dischargin in state Charged State
+Transition: Charged State -> Discharged State
+Transition: None -> Enter State
+Transition: None -> Enter State
+Patient Info: test
+Charging in state Enter State
+Transition: Enter State -> Charged State
+Dischargin in state Charged State
+Transition: Charged State -> Discharged State
+Transition: None -> Enter State
+Patient Info: test
+Charging in state Enter State
+Transition: Enter State -> Charged State
+Dischargin in state Charged State
+Transition: Charged State -> Discharged State
+Transition: None -> Enter State
+Patient Info: Name: test - age: 20 gender: male
+Charging in state Enter State
+Transition: Enter State -> Charged State
+Dischargin in state Charged State
+Transition: Charged State -> Discharged State
+Transition: None -> Enter State
+Patient Info: None
+Charging in state Enter State
+Transition: Enter State -> Charged State
+Dischargin in state Charged State
+Transition: Charged State -> Discharged State
+Transition: None -> Enter State
+Patient Info: None
+Charging in state Enter State
+Transition: Enter State -> Charged State
+Dischargin in state Charged State
+Transition: Charged State -> Discharged State
+Transition: None -> Enter State
+Patient Info: None
+Charging in state Enter State
+Transition: Enter State -> Charged State
+Dischargin in state Charged State
+Transition: Charged State -> Discharged State
+Transition: None -> Enter State
+Patient Info: None
+Charging in state Enter State
+Transition: Enter State -> Charged State
+Dischargin in state Charged State
+Transition: Charged State -> Discharged State
+Transition: None -> Enter State
+Patient Info: None
+Charging in state Enter State
+Transition: Enter State -> Charged State
+Dischargin in state Charged State
+Transition: Charged State -> Discharged State
+Transition: None -> Enter State
+Patient Info: None
+Charging in state Enter State
+Transition: Enter State -> Charged State
+Dischargin in state Charged State
+Transition: Charged State -> Discharged State
+Transition: None -> Enter State
+Patient Info: None
+Charging in state Enter State
+Transition: Enter State -> Charged State
+Dischargin in state Charged State
+Transition: Charged State -> Discharged State
+Transition: None -> Enter State
+Patient Info: None
+Charging in state Enter State
+Transition: Enter State -> Charged State
+Dischargin in state Charged State
+Transition: Charged State -> Discharged State

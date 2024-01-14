@@ -6,7 +6,7 @@ async def upgrade(db: BaseDBAsyncClient) -> str:
         CREATE TABLE IF NOT EXISTS "patient" (
     "created_at" TIMESTAMP NOT NULL  DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP NOT NULL  DEFAULT CURRENT_TIMESTAMP,
-    "deleted_at" TIMESTAMP NOT NULL,
+    "deleted_at" TIMESTAMP,
     "id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     "name" VARCHAR(255) NOT NULL,
     "age" INT NOT NULL,
@@ -17,7 +17,7 @@ CREATE INDEX IF NOT EXISTS "idx_patient_id_3abb4a" ON "patient" ("id", "name");
 CREATE TABLE IF NOT EXISTS "hospital" (
     "created_at" TIMESTAMP NOT NULL  DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP NOT NULL  DEFAULT CURRENT_TIMESTAMP,
-    "deleted_at" TIMESTAMP NOT NULL,
+    "deleted_at" TIMESTAMP,
     "id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     "plan_name" VARCHAR(255) NOT NULL,
     "status" VARCHAR(255) NOT NULL,
