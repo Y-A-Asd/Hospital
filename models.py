@@ -5,6 +5,15 @@ from tortoise import Tortoise
 import asyncio
 from tortoise import run_async
 
+TORTOISE_ORM = {
+    "connections": {"default": "sqlite://db.sqlite3"},
+    "apps": {
+        "models": {
+            "models": ["models", "aerich.models"],
+            "default_connection": "default",
+        },
+    },
+}
 
 class SoftDeleteManager(Manager):
     def get_queryset(self):
@@ -26,6 +35,9 @@ class BaseModel(Model):
 class Patient(BaseModel):
     id = fields.IntField(pk=True)
     name = fields.CharField(max_length=255)
+    age = fields.IntField()
+    gender = fields.CharField(max_length=31)
+    birthday = fields.DatetimeField()
 
     class Meta:
         ordering = ['-created_at']
@@ -53,6 +65,7 @@ class Hospital(BaseModel):
 
 
 async def init_db():
+
     await Tortoise.init(
         db_url='sqlite://db.sqlite3',
         modules={'models': ['models']}

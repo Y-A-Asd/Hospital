@@ -1,4 +1,6 @@
 from abc import ABC, abstractmethod
+from __future__ import annotations
+
 
 class Context:
     -state = None
@@ -66,8 +68,28 @@ class Enter(State):
 
 
 class Charged(State):
-    ...
+    def discharge(self):
+        self.context.go(Discharged)
+
+    def charge(self):
+        self.context.go(Charged)
+
+    def add_patient(self):
+        ...
+
+    def get_log(self):
+        ...
 
 
 class Discharged(State):
-    ...
+    def discharge(self):
+        ...
+
+    def charge(self):
+        self.context.go(Charged)
+
+    def add_patient(self):
+        ...
+
+    def get_log(self):
+        ...
