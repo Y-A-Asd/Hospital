@@ -15,6 +15,7 @@ TORTOISE_ORM = {
     },
 }
 
+
 class SoftDeleteManager(Manager):
     def get_queryset(self):
         return super(SoftDeleteManager, self).get_queryset().filter(deleted_at__isnull=True)
