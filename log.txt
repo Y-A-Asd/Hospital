@@ -285,3 +285,81 @@ Charging in state Discharged State
 Transition:{ Discharged State }-> Charged State
 Discharging in state { Charged State }
 Transition:{ Charged State }-> Discharged State
+Transition:{ None }-> Discharged State
+Patient Info: Name: test - Age: 20 Gender: male
+Charging in state Discharged State
+Transition:{ Discharged State }-> Charged State
+Transition:{ None }-> Charged State
+Patient Info: Name: test - Age: 20 Gender: male
+Charging in state Charged State
+Transition:{ Charged State }-> Charged State
+Patient Info: Name: test - Age: 20 Gender: male
+Charging in state Charged State
+Transition:{ Charged State }-> Charged State
+Discharging in state { Charged State }
+Transition:{ Charged State }-> Discharged State
+Patient Info: Name: test - Age: 20 Gender: male
+Charging in state Discharged State
+Transition:{ Discharged State }-> Charged State
+Discharging in state { Charged State }
+Transition:{ Charged State }-> Discharged State
+Transition:{ None }-> Discharged State
+Patient Info: Name: test - Age: 20 Gender: male
+Charging in state Discharged State
+Transition:{ Discharged State }-> Charged State
+Transition:{ None }-> Charged State
+Patient Info: Name: test - Age: 20 Gender: male
+Charging in state Charged State
+Transition:{ Charged State }-> Charged State
+Patient Info: Name: test - Age: 20 Gender: male
+Charging in state Charged State
+Transition:{ Charged State }-> Charged State
+Discharging in state { Charged State }
+Transition:{ Charged State }-> Discharged State
+Patient Info: Name: test - Age: 20 Gender: male
+Charging in state Discharged State
+Transition:{ Discharged State }-> Charged State
+Discharging in state { Charged State }
+Transition:{ Charged State }-> Discharged State
+2024-01-15 06:18:58.894505 Transition:{ None }-> Discharged State
+2024-01-15 06:19:02.904602 Patient Info: Name: test - Age: 20 Gender: male
+2024-01-15 06:19:02.904924 Charging in state Discharged State
+2024-01-15 06:19:02.905167 Transition:{ Discharged State }-> Charged State
+2024-01-15 06:19:04.911768 Patient Info: Name: test - Age: 20 Gender: male
+2024-01-15 06:19:04.912070 Charging in state Charged State
+2024-01-15 06:19:04.912344 Transition:{ Charged State }-> Charged State
+2024-01-15 06:19:06.918820 Discharging in state { Charged State }
+2024-01-15 06:19:06.919124 Transition:{ Charged State }-> Discharged State
+2024-01-15 06:19:08.925065 Patient Info: Name: test - Age: 20 Gender: male
+2024-01-15 06:19:08.925390 Charging in state Discharged State
+2024-01-15 06:19:08.925739 Transition:{ Discharged State }-> Charged State
+2024-01-15 06:19:10.931287 Discharging in state { Charged State }
+2024-01-15 06:19:10.931589 Transition:{ Charged State }-> Discharged State
+2024-01-15 06:20:16.597027 Transition:{ None }-> Discharged State
+2024-01-15 06:20:20.607393 Patient Info: Name: test - Age: 20 Gender: male
+2024-01-15 06:20:20.607773 Charging in state Discharged State
+2024-01-15 06:20:20.608060 Transition:{ Discharged State }-> Charged State
+2024-01-15 06:20:22.617733 Patient Info: Name: test - Age: 20 Gender: male
+2024-01-15 06:20:22.618172 Charging in state Charged State
+2024-01-15 06:20:22.618470 Transition:{ Charged State }-> Charged State
+2024-01-15 06:20:24.625447 Discharging in state { Charged State }
+2024-01-15 06:20:24.625868 Transition:{ Charged State }-> Discharged State
+2024-01-15 06:20:26.631088 Patient Info: Name: test - Age: 20 Gender: male
+2024-01-15 06:20:26.631307 Charging in state Discharged State
+2024-01-15 06:20:26.631597 Transition:{ Discharged State }-> Charged State
+2024-01-15 06:20:28.642826 Discharging in state { Charged State }
+2024-01-15 06:20:28.643998 Transition:{ Charged State }-> Discharged State
+2024-01-15 06:20:31.184842 Transition:{ None }-> Discharged State
+2024-01-15 06:20:35.194639 Patient Info: Name: test - Age: 20 Gender: male
+2024-01-15 06:20:35.195062 Charging in state Discharged State
+2024-01-15 06:20:35.195483 Transition:{ Discharged State }-> Charged State
+2024-01-15 06:20:37.203411 Patient Info: Name: test - Age: 20 Gender: male
+2024-01-15 06:20:37.203801 Charging in state Charged State
+2024-01-15 06:20:37.204106 Transition:{ Charged State }-> Charged State
+2024-01-15 06:20:39.212028 Discharging in state { Charged State }
+2024-01-15 06:20:39.212399 Transition:{ Charged State }-> Discharged State
+2024-01-15 06:20:41.220345 Patient Info: Name: test - Age: 20 Gender: male
+2024-01-15 06:20:41.220579 Charging in state Discharged State
+2024-01-15 06:20:41.220712 Transition:{ Discharged State }-> Charged State
+2024-01-15 06:20:43.225796 Discharging in state { Charged State }
+2024-01-15 06:20:43.225915 Transition:{ Charged State }-> Discharged State

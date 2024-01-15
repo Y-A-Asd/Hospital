@@ -10,7 +10,8 @@ from log import LogMixin
 from models import Patient, Hospital
 import asyncio
 
-from plans import PlanFactory
+from plans import PlanFactory, GetPlan
+from routes import BaseMenu
 
 
 class Context(LogMixin):
@@ -93,7 +94,9 @@ class Discharged(State):
         return 'Discharged State'
 
 
-class HospitalManager:
+
+
+class HospitalManager(BaseMenu):
     """
         sections = ['Kids', 'Brain', 'Emergency']
         states = ['Discharged', 'Charged', 'Enter']
@@ -107,6 +110,19 @@ class HospitalManager:
     """
 
     def __init__(self, patient: Patient, plan_name: str, pay: int):
+        manager_name = "Hospital Manager"
+        menu_items = [
+            {"label": "Discharge Patient", "action": self.discharge, "args": []},
+            {"label": "Charge Patient", "action": self.charge, "args": ["section"]},
+            {"label": "View Current State", "action": self.current_state, "args": []},
+            {"label": "View Current Pay", "action": self.current_pay, "args": []},
+            {"label": "Add Pay", "action": self.current_pay, "args": ["amount"]},
+            {"label": "Get Plan", "action": self.get_plan, "args": []},
+            {"label": "Exit", "action": self.exit_program, "args": []},
+        ]
+
+        super().__init__(manager_name, menu_items)
+        self.hospital_manager = HospitalManager(patient, plan_name, pay)
         self.hospital = None
         self.patient = patient
         self.context = None
@@ -136,6 +152,7 @@ class HospitalManager:
         self.context.log(patient_info)
         self.context.charge(section)
 
+
     @property
     def current_state(self):
         return self.context._state
@@ -147,7 +164,9 @@ class HospitalManager:
     @current_pay.setter
     def current_pay(self, new: int):
         self.hospital.pay += new
-
+        asyncio.create_task(self.save_pay())
+    async def save_pay(self):
+        await self.hospital.save()
 
 async def main():
     await Tortoise.init(
@@ -159,28 +178,35 @@ async def main():
     # await patient.save()
     # print(patient)
 
+
+
+
     plan = PlanFactory.create_plan("full")
-    patient = await Patient.get_or_none(name='test')
-    hospital_manager = HospitalManager(patient, plan, 15000)
-    await asyncio.sleep(2)
-    print('START')
-    print(patient)
-    print(hospital_manager.current_state)
-    await hospital_manager.charge('Kids')
-    print(hospital_manager.current_state)
-    print(hospital_manager.current_state.section)
-    await hospital_manager.charge('Brain')
-    print(hospital_manager.current_state)
-    print(hospital_manager.current_state.section)
-    await hospital_manager.discharge()
-    print(hospital_manager.current_state)
-    await hospital_manager.charge('Brain')
-    print(hospital_manager.current_state)
-    print(hospital_manager.current_state.section)
-    await hospital_manager.discharge()
-    print(hospital_manager.current_state)
-    print('End')
-    await Tortoise.close_connections()
+    # patient = await Patient.get_or_none(name='test')
+    # hospital_manager = HospitalManager(patient, plan, 15000)
+    # await asyncio.sleep(2)
+    # # print(sys.modules[__name__].__dir__())
+    # print('START')
+    # print(patient)
+    # print(hospital_manager.current_state)
+    # await hospital_manager.charge('Kids')
+    # print(hospital_manager.current_state)
+    # print(hospital_manager.current_state.section)
+    # print(hospital_manager.current_pay)
+    # hospital_manager.current_pay = 1000
+    # print(hospital_manager.current_pay)
+    # await hospital_manager.charge('Brain')
+    # print(hospital_manager.current_state)
+    # print(hospital_manager.current_state.section)
+    # await hospital_manager.discharge()
+    # print(hospital_manager.current_state)
+    # await hospital_manager.charge('Brain')
+    # print(hospital_manager.current_state)
+    # print(hospital_manager.current_state.section)
+    # await hospital_manager.discharge()
+    # print(hospital_manager.current_state)
+    # print('End')
+    # await Tortoise.close_connections()
 
 
 asyncio.run(main())
