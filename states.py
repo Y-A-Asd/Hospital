@@ -1,7 +1,11 @@
 from __future__ import annotations
+
+import sys
 from abc import ABC, abstractmethod
 from tortoise import Tortoise, run_async
 from transitions import Machine
+from transitions.extensions import states
+
 from log import LogMixin
 from models import Patient, Hospital
 import asyncio
@@ -50,9 +54,11 @@ class State(ABC):
 
 class Enter(State):
     def discharge(self):
+        print('Discharging Person')
         self.context.go(Discharged())
 
     def charge(self, section):
+        print(f'Person charged into {{ {section} }} section')
         self.context.go(Charged(section))
 
     def __str__(self):
@@ -64,9 +70,11 @@ class Charged(State):
         self.section = section
 
     def discharge(self):
+        print('Discharging Person')
         self.context.go(Discharged())
 
     def charge(self, section):
+        print(f'Person charged from {{ {self.section} }} section -> {{ {section} }} section')
         self.context.go(Charged(section))
 
     def __str__(self):
@@ -75,9 +83,10 @@ class Charged(State):
 
 class Discharged(State):
     def discharge(self):
-        pass
+        print('Person allready discharged')
 
-    def charge(self, section):
+    def charge(self, section:str):
+        print(f'Person charged into {{ {section} }} section')
         self.context.go(Charged(section))
 
     def __str__(self):
@@ -97,14 +106,21 @@ class HospitalManager:
         ]
     """
 
-    def __init__(self, patient: Patient, plan_name, pay):
+    def __init__(self, patient: Patient, plan_name: str, pay: int):
         self.hospital = None
         self.patient = patient
-        self.context = Context(Enter())
-        asyncio.create_task(self.init_hospital(patient, plan_name, pay))  # Use asyncio.create_task here
+        self.context = None
+        asyncio.create_task(self.init_hospital(patient, plan_name, pay))
 
-    async def init_hospital(self, patient, plan_name, pay):
-        self.hospital = await Hospital.create(plan_name=plan_name, status='entered', pay=pay, person=patient)
+    async def init_hospital(self, patient: Patient, plan_name: str, pay: int):
+        self.hospital = await Hospital.get(id=1)
+        print('we are here')
+        state_string = self.hospital.status.capitalize()
+        state_class =getattr(sys.modules[__name__], state_string, None)
+        if state_class is None or not issubclass(state_class, State):
+            state_class = Enter
+        print(state_class)
+        self.context = Context(state_class())
 
     async def discharge(self):
         await asyncio.sleep(2)
@@ -112,7 +128,7 @@ class HospitalManager:
         await self.hospital.save()
         self.context.discharge()
 
-    async def charge(self, section):
+    async def charge(self, section:str):
         await asyncio.sleep(2)
         patient_info = f"Patient Info: {self.patient}"
         self.hospital.status = 'charged'
@@ -123,6 +139,14 @@ class HospitalManager:
     @property
     def current_state(self):
         return self.context._state
+
+    @property
+    def current_pay(self):
+        return self.hospital.pay
+
+    @current_pay.setter
+    def current_pay(self, new: int):
+        self.hospital.pay += new
 
 
 async def main():
@@ -138,17 +162,24 @@ async def main():
     plan = PlanFactory.create_plan("full")
     patient = await Patient.get_or_none(name='test')
     hospital_manager = HospitalManager(patient, plan, 15000)
+    await asyncio.sleep(2)
+    print('START')
+    print(patient)
     print(hospital_manager.current_state)
-
     await hospital_manager.charge('Kids')
     print(hospital_manager.current_state)
     print(hospital_manager.current_state.section)
-
+    await hospital_manager.charge('Brain')
     print(hospital_manager.current_state)
-
+    print(hospital_manager.current_state.section)
     await hospital_manager.discharge()
     print(hospital_manager.current_state)
-    print('end')
+    await hospital_manager.charge('Brain')
+    print(hospital_manager.current_state)
+    print(hospital_manager.current_state.section)
+    await hospital_manager.discharge()
+    print(hospital_manager.current_state)
+    print('End')
     await Tortoise.close_connections()
 
 
