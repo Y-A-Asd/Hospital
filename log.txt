@@ -91,3 +91,78 @@ Charging in state Enter State
 Transition: Enter State -> Charged State
 Dischargin in state Charged State
 Transition: Charged State -> Discharged State
+Transition: None -> Enter State
+Patient Info: None
+Charging in state Enter State
+Transition: Enter State -> Charged State
+Dischargin in state Charged State
+Transition: Charged State -> Discharged State
+Transition: None -> Enter State
+Patient Info: None
+Charging in state Enter State
+Transition: Enter State -> Charged State
+Dischargin in state Charged State
+Transition: Charged State -> Discharged State
+Patient Info: None
+Charging in state None
+Patient Info: Name: test - age: 20 gender: male
+Charging in state None
+Patient Info: Name: test - age: 20 gender: male
+Charging in state None
+Transition: None -> Enter State
+Patient Info: Name: test - age: 20 gender: male
+Charging in state Enter State
+Transition: Enter State -> Charged State
+Dischargin in state Charged State
+Transition: Charged State -> Discharged State
+Transition: None -> Enter State
+Patient Info: Name: test - age: 20 gender: male
+Charging in state Enter State
+Transition: Enter State -> Charged State
+Dischargin in state Charged State
+Transition: Charged State -> Discharged State
+Transition: None -> Enter State
+Patient Info: Name: test - age: 20 gender: male
+Charging in state Enter State
+Transition: Enter State -> Charged State
+Dischargin in state Charged State
+Transition: Charged State -> Discharged State
+Transition: None -> Enter State
+Patient Info: Name: test - Age: 20 Gender: male
+Charging in state Enter State
+Transition: Enter State -> Charged State
+Dischargin in state Charged State
+Transition: Charged State -> Discharged State
+Transition:{ None }-> Enter State
+Patient Info: Name: test - Age: 20 Gender: male
+Charging in state Enter State
+Transition:{ Enter State }-> Charged State
+Dischargin in state { Charged State }
+Transition:{ Charged State }-> Discharged State
+Transition:{ None }-> Enter State
+Patient Info: Name: test - Age: 20 Gender: male
+Charging in state Enter State
+Transition:{ Enter State }-> Charged State
+Discharging in state { Charged State }
+Transition:{ Charged State }-> Discharged State
+Transition:{ None }-> Enter State
+Transition:{ None }-> Enter State
+Transition:{ None }-> Enter State
+Transition:{ None }-> Enter State
+Transition:{ None }-> Enter State
+Transition:{ None }-> Enter State
+Transition:{ None }-> Enter State
+Transition:{ None }-> Enter State
+Transition:{ None }-> Enter State
+Transition:{ None }-> Enter State
+Transition:{ None }-> Enter State
+Transition:{ None }-> Enter State
+Transition:{ None }-> Enter State
+Transition:{ None }-> Enter State
+Transition:{ None }-> Enter State
+Transition:{ None }-> Enter State
+Patient Info: Name: test - Age: 20 Gender: male
+Charging in state Enter State
+Transition:{ Enter State }-> Charged State
+Discharging in state { Charged State }
+Transition:{ Charged State }-> Discharged State

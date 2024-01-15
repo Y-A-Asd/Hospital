@@ -26,7 +26,7 @@ class SoftDeleteManager(Manager):
 class BaseModel(Model):
     created_at = fields.DatetimeField(auto_now=True)
     updated_at = fields.DatetimeField(auto_now_add=True)
-    deleted_at = fields.DatetimeField(default=None, null=True)
+    deleted_at = fields.DatetimeField(null=True)
     all_obj = Manager()
 
     class Meta:
@@ -47,7 +47,7 @@ class Patient(BaseModel):
         indexes = ('id', 'name')
 
     def __str__(self):
-        return f'Name: {self.name} - age: {self.age} gender: {self.gender}'
+        return f'Name: {self.name} - Age: {self.age} Gender: {self.gender}'
 
 Patient_Pydantic = pydantic_model_creator(Patient, name='Patient')
 
@@ -63,6 +63,7 @@ class Hospital(BaseModel):
     plan_name = fields.CharField(max_length=255)
     person = fields.ForeignKeyField('models.Patient', related_name='patient')
     status = fields.CharField(max_length=255)
+    pay = fields.DecimalField(max_digits=16, decimal_places=2, default=0.0)
 
     class Meta:
         ordering = ['-created_at']

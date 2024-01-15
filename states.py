@@ -1,11 +1,12 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
-
 from tortoise import Tortoise, run_async
 from transitions import Machine
 from log import LogMixin
-from models import Patient
+from models import Patient, Hospital
 import asyncio
+
+from plans import PlanFactory
 
 
 class Context(LogMixin):
@@ -16,20 +17,17 @@ class Context(LogMixin):
         self.go(state)
 
     def go(self, state: State) -> None:
-        self.log(f'Transition: {self._state} -> {state}')
+        self.log(f'Transition:{{ {self._state} }}-> {state}')
         self._state = state
         self._state.context = self
 
     def discharge(self):
-        self.log(f'Dischargin in state {self._state}')
+        self.log(f'Discharging in state {{ {self._state} }}')
         self._state.discharge()
 
     def charge(self, section):
         self.log(f'Charging in state {self._state}')
         self._state.charge(section)
-
-    def add_patient(self):
-        self._state.add_patient()
 
 
 class State(ABC):
@@ -57,9 +55,6 @@ class Enter(State):
     def charge(self, section):
         self.context.go(Charged(section))
 
-    def add_patient(self):
-        pass
-
     def __str__(self):
         return 'Enter State'
 
@@ -74,9 +69,6 @@ class Charged(State):
     def charge(self, section):
         self.context.go(Charged(section))
 
-    def add_patient(self):
-        pass
-
     def __str__(self):
         return 'Charged State'
 
@@ -87,9 +79,6 @@ class Discharged(State):
 
     def charge(self, section):
         self.context.go(Charged(section))
-
-    def add_patient(self):
-        pass
 
     def __str__(self):
         return 'Discharged State'
@@ -108,20 +97,28 @@ class HospitalManager:
         ]
     """
 
-    def __init__(self, patient: Patient):
+    def __init__(self, patient: Patient, plan_name, pay):
+        self.hospital = None
         self.patient = patient
         self.context = Context(Enter())
+        asyncio.create_task(self.init_hospital(patient, plan_name, pay))  # Use asyncio.create_task here
 
-    def discharge(self):
+    async def init_hospital(self, patient, plan_name, pay):
+        self.hospital = await Hospital.create(plan_name=plan_name, status='entered', pay=pay, person=patient)
+
+    async def discharge(self):
+        await asyncio.sleep(2)
+        self.hospital.status = 'discharged'
+        await self.hospital.save()
         self.context.discharge()
 
-    def charge(self, section):
+    async def charge(self, section):
+        await asyncio.sleep(2)
         patient_info = f"Patient Info: {self.patient}"
+        self.hospital.status = 'charged'
+        await self.hospital.save()
         self.context.log(patient_info)
         self.context.charge(section)
-
-    def add_patient(self):
-        self.context.add_patient()
 
     @property
     def current_state(self):
@@ -133,22 +130,26 @@ async def main():
         db_url='sqlite://db.sqlite3',
         modules={'models': ['models']}
     )
-    patient = Patient(name='test', age='20', gender='male', birthday='1970-01-01')
-    patient.save()
-    print(patient)
+
+    # patient = Patient(name='test', age='20', gender='male', birthday='1970-01-01')
+    # await patient.save()
+    # print(patient)
+
+    plan = PlanFactory.create_plan("full")
     patient = await Patient.get_or_none(name='test')
-    hospital_manager = HospitalManager(patient)
+    hospital_manager = HospitalManager(patient, plan, 15000)
     print(hospital_manager.current_state)
 
-    hospital_manager.charge('Kids')
+    await hospital_manager.charge('Kids')
     print(hospital_manager.current_state)
     print(hospital_manager.current_state.section)
 
     print(hospital_manager.current_state)
 
-    hospital_manager.discharge()
+    await hospital_manager.discharge()
     print(hospital_manager.current_state)
     print('end')
+    await Tortoise.close_connections()
 
 
 asyncio.run(main())

@@ -7,6 +7,9 @@ class Plan(ABC):
     def get_plan(self):
         pass
 
+    def __str__(self):
+        return str(self.get_plan().lower().split()[0])
+
 
 class FullInsurancePlan(Plan):
     off = 20
