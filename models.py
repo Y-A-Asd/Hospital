@@ -70,7 +70,7 @@ class Hospital(BaseModel):
         no insurance
     """
     id = fields.IntField(pk=True)
-    plan_name = fields.CharField(max_length=255)
+    plan_name = fields.CharField(max_length=255, null=True)
     person = fields.ForeignKeyField('models.Patient', related_name='patient')
     status = fields.CharField(max_length=255)
     pay = fields.DecimalField(max_digits=16, decimal_places=2, default=0.0)

@@ -363,3 +363,20 @@ Transition:{ Charged State }-> Discharged State
 2024-01-15 06:20:41.220712 Transition:{ Discharged State }-> Charged State
 2024-01-15 06:20:43.225796 Discharging in state { Charged State }
 2024-01-15 06:20:43.225915 Transition:{ Charged State }-> Discharged State
+2024-01-16 07:39:53.670966 Transition:{ None }-> Enter State
+2024-01-16 07:52:46.177363 Transition:{ None }-> Enter State
+2024-01-16 23:45:54.043061 Transition:{ None }-> Enter State
+2024-01-16 23:46:22.768925 Patient Info: Name: yousof - Age: 20 Gender: male
+2024-01-16 23:46:22.769369 Charging in state Enter State
+2024-01-16 23:46:22.769930 Transition:{ Enter State }-> Charged State
+2024-01-16 23:48:07.173823 Transition:{ None }-> Charged State
+2024-01-16 23:49:16.731137 Transition:{ None }-> Charged State
+2024-01-16 23:52:24.789096 Transition:{ None }-> Charged State
+2024-01-16 23:53:30.157227 Transition:{ None }-> Charged State
+2024-01-16 23:54:08.400276 Transition:{ None }-> Charged State
+2024-01-16 23:54:35.987748 Transition:{ None }-> Charged State
+2024-01-16 23:58:49.966651 Transition:{ None }-> Charged State
+2024-01-17 00:00:15.067587 Transition:{ None }-> Charged State
+2024-01-17 00:01:24.358955 Transition:{ None }-> Charged State
+2024-01-17 02:24:34.476954 Transition:{ None }-> Charged State
+2024-01-17 02:24:51.712212 Transition:{ None }-> Charged State

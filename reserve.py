@@ -1,7 +1,7 @@
 import asyncio
 from tortoise import Tortoise, run_async
 from models import Patient, Reservation
-from routes import BaseMenu
+from routes import BaseMenu, ExitRequest
 
 
 class ReservationManager(BaseMenu):
@@ -12,7 +12,7 @@ class ReservationManager(BaseMenu):
             {"label": "Add Reservation", "action": self.add_reservation, "args": ["name", "date"]},
             {"label": "Delete Reservation", "action": self.delete_reservation, "args": ["id"]},
             {"label": "List Reservations", "action": self.list_reservations, "args": []},
-            {"label": "Exit", "action": ..., "args": []},
+            {"label": "Exit", "action": self.exit, "args": []},
         ]
         super().__init__(manager_name, menu_items)
 
@@ -47,3 +47,6 @@ class ReservationManager(BaseMenu):
                 print(f"- {reservation}")
         else:
             print("No reservations found.")
+
+    async def exit(self):
+        raise ExitRequest()

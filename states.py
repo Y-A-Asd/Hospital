@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import sys
 from abc import ABC, abstractmethod
+from decimal import Decimal
+
 from tortoise import Tortoise, run_async
 from transitions import Machine
 from transitions.extensions import states
@@ -107,10 +109,15 @@ class HospitalManager(BaseMenu):
         ]
     """
 
-    def __init__(self, patient: Patient, plan_name: str, pay: int):
+    def __init__(self, patient: Patient, pay: int = None, plan_name: str=None):
+        print('Initializing Patient...')
+
+        self.hospital = None
+        self.patient = patient
+        self.context = None
         # manager_name = "Hospital Manager"
         # menu_items = [
-        #     {"label": "Discharge Patient", "action": self.discharge, "args": []},
+        #     {"el": "Discharge Patient", "action": self.discharge, "args": []},
         #     {"label": "Charge Patient", "action": self.charge, "args": ["section"]},
         #     {"label": "View Current State", "action": self.current_state, "args": []},
         #     {"label": "View Current Pay", "action": self.current_pay, "args": []},
@@ -119,23 +126,19 @@ class HospitalManager(BaseMenu):
         #     {"label": "Exit", "action": self.exit_program, "args": []},
         # ]
         # super().__init__(manager_name, menu_items)
-        # self.hospital_manager = HospitalManager(patient, plan_name, pay)
-        self.hospital = None
-        self.patient = patient
-        self.context = None
-        asyncio.create_task(self.init_hospital(patient, plan_name, pay))
 
     # async def menu(self):
     #     await self.router.menu(self.manager_name, self.menu_items)
 
-    async def init_hospital(self, patient: Patient, plan_name: str, pay: int):
-        self.hospital = await Hospital.get_or_create(person=patient, pay=pay, plan_name=plan_name, status='entered')
-        print('we are here')
+    async def init_hospital(self, patient: Patient, pay: int = None, plan_name=None):
+        self.hospital = await Hospital.get_or_none(person=patient, status__not='discharged')
+        if not self.hospital:
+            self.hospital = await Hospital.create(person=patient, status='entered')
+        print(f'Name: {self.hospital.person} status: {self.hospital.status}, Pay: {self.hospital.pay}, Status: {self.hospital.status}')
         state_string = self.hospital.status.capitalize()
         state_class = getattr(sys.modules[__name__], state_string, None)
         if state_class is None or not issubclass(state_class, State):
             state_class = Enter
-        print(state_class)
         self.context = Context(state_class())
 
     async def discharge(self):
@@ -161,8 +164,8 @@ class HospitalManager(BaseMenu):
         return self.hospital.pay
 
     @current_pay.setter
-    def current_pay(self, new: int):
-        self.hospital.pay += new
+    def current_pay(self, new: Decimal):
+        self.hospital.pay += Decimal(new)
         asyncio.create_task(self.save_pay())
 
     async def save_pay(self):
