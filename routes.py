@@ -42,9 +42,7 @@ class BaseMenu:
         self.router = BaseRouterMixin()
         self.manager_name = manager_name
         self.menu_items = menu_items
-        if menu_req is not None:
-            for req in menu_req:
-                req = input
+
 
     async def menu(self):
         await self.router.menu(self.manager_name, self.menu_items)

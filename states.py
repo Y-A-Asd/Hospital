@@ -86,14 +86,12 @@ class Discharged(State):
     def discharge(self):
         print('Person allready discharged')
 
-    def charge(self, section:str):
+    def charge(self, section: str):
         print(f'Person charged into {{ {section} }} section')
         self.context.go(Charged(section))
 
     def __str__(self):
         return 'Discharged State'
-
-
 
 
 class HospitalManager(BaseMenu):
@@ -110,29 +108,31 @@ class HospitalManager(BaseMenu):
     """
 
     def __init__(self, patient: Patient, plan_name: str, pay: int):
-        manager_name = "Hospital Manager"
-        menu_items = [
-            {"label": "Discharge Patient", "action": self.discharge, "args": []},
-            {"label": "Charge Patient", "action": self.charge, "args": ["section"]},
-            {"label": "View Current State", "action": self.current_state, "args": []},
-            {"label": "View Current Pay", "action": self.current_pay, "args": []},
-            {"label": "Add Pay", "action": self.current_pay, "args": ["amount"]},
-            {"label": "Get Plan", "action": self.get_plan, "args": []},
-            {"label": "Exit", "action": self.exit_program, "args": []},
-        ]
-
-        super().__init__(manager_name, menu_items)
-        self.hospital_manager = HospitalManager(patient, plan_name, pay)
+        # manager_name = "Hospital Manager"
+        # menu_items = [
+        #     {"label": "Discharge Patient", "action": self.discharge, "args": []},
+        #     {"label": "Charge Patient", "action": self.charge, "args": ["section"]},
+        #     {"label": "View Current State", "action": self.current_state, "args": []},
+        #     {"label": "View Current Pay", "action": self.current_pay, "args": []},
+        #     {"label": "Add Pay", "action": self.current_pay, "args": ["amount"]},
+        #     {"label": "Get Plan", "action": self.get_plan, "args": []},
+        #     {"label": "Exit", "action": self.exit_program, "args": []},
+        # ]
+        # super().__init__(manager_name, menu_items)
+        # self.hospital_manager = HospitalManager(patient, plan_name, pay)
         self.hospital = None
         self.patient = patient
         self.context = None
         asyncio.create_task(self.init_hospital(patient, plan_name, pay))
 
+    # async def menu(self):
+    #     await self.router.menu(self.manager_name, self.menu_items)
+
     async def init_hospital(self, patient: Patient, plan_name: str, pay: int):
-        self.hospital = await Hospital.get(id=1)
+        self.hospital = await Hospital.get_or_create(person=patient, pay=pay, plan_name=plan_name, status='entered')
         print('we are here')
         state_string = self.hospital.status.capitalize()
-        state_class =getattr(sys.modules[__name__], state_string, None)
+        state_class = getattr(sys.modules[__name__], state_string, None)
         if state_class is None or not issubclass(state_class, State):
             state_class = Enter
         print(state_class)
@@ -144,14 +144,13 @@ class HospitalManager(BaseMenu):
         await self.hospital.save()
         self.context.discharge()
 
-    async def charge(self, section:str):
+    async def charge(self, section: str):
         await asyncio.sleep(2)
         patient_info = f"Patient Info: {self.patient}"
         self.hospital.status = 'charged'
         await self.hospital.save()
         self.context.log(patient_info)
         self.context.charge(section)
-
 
     @property
     def current_state(self):
@@ -165,8 +164,10 @@ class HospitalManager(BaseMenu):
     def current_pay(self, new: int):
         self.hospital.pay += new
         asyncio.create_task(self.save_pay())
+
     async def save_pay(self):
         await self.hospital.save()
+
 
 async def main():
     await Tortoise.init(
@@ -178,10 +179,7 @@ async def main():
     # await patient.save()
     # print(patient)
 
-
-
-
-    plan = PlanFactory.create_plan("full")
+    # plan = PlanFactory.create_plan("full")
     # patient = await Patient.get_or_none(name='test')
     # hospital_manager = HospitalManager(patient, plan, 15000)
     # await asyncio.sleep(2)
@@ -208,5 +206,4 @@ async def main():
     # print('End')
     # await Tortoise.close_connections()
 
-
-asyncio.run(main())
+# asyncio.run(main())

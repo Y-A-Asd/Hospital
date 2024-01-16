@@ -79,8 +79,8 @@ async def PlanManager():
     print(f"Selected Plan: {selected_plan}")
     return PlanFactory.create_plan(selected_plan.lower().split()[0])
 
-b = asyncio.run(PlanManager())
-print(b.off)
+# b = asyncio.run(PlanManager())
+# print(b.off)
 
 
 

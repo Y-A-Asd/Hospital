@@ -1,50 +1,56 @@
 import asyncio
-
-from models import Patient
+import sys
+from models import Patient, Hospital
 from plans import PlanManager
 from routes import BaseMenu
 from tortoise import Tortoise
-from reserve import ReservationManager
 from states import HospitalManager
 
 
-# async def main():
-#     await Tortoise.init(
-#         db_url='sqlite://db.sqlite3',
-#         modules={'models': ['models']}
-#     )
-#
-#     reservation_manager = ReservationManager()
-#     await reservation_manager.menu()
-#
-#
-# asyncio.run(main())
+
 
 
 class BaseMenuGenerator(BaseMenu):
     def __init__(self):
-        self.hospital= None
+        self.hospital = None
         manager_name = "Wellcome"
         menu_items = [
             {"label": "Enter Patient", "action": self.addingpatient, "args": ['name', 'age', 'gender', 'birthday']},
             {"label": "Select Patient", "action": self.selectpatient, "args": ['name']},
-            {"label": "View Current Pay", "action": self.current_pay, "args": []},
-            {"label": "Add Pay", "action": self.current_pay, "args": ["amount"]},
-            {"label": "Get Plan", "action": self.get_plan, "args": []},
-            {"label": "Exit", "action": self.exit_program, "args": []},
+            {"label": "Exit", "action": self.exit, "args": []},
         ]
+        super().__init__(manager_name, menu_items)
+    # async def menu(self):
+    #     await self.router.menu(self.manager_name, self.menu_items)
 
-    async def addingpatient(self,name, age, gender, birthday):
-        patient = Patient(name=name, age=age, gender=gender, birthday=birthday)
-        plan = asyncio.run(PlanManager())
+    async def addingpatient(self, name, age, gender, birthday):
+        patient = Patient.create(name=name, age=age, gender=gender, birthday=birthday)
+        plan = await PlanManager()
         self.hospital = HospitalManager(patient, plan, 0)
-        await asyncio.sleep(0.5)
+        # await asyncio.sleep(2.5)
+        # print(self.hospital)
 
-    async def selectpatient(self,name):
+    async def selectpatient(self, name):
         patient = await Patient.get_or_none(name__contains=name)
+        hospital = Hospital.get_or_none(person=patient, status__not='discharged')
+        print(hospital)
         # plan = asyncio.run(PlanManager())
-        self.hospital = HospitalManager(patient, plan, 0)
+        # self.hospital = HospitalManager(patient, plan, 0)
+
+    async def exit(self):
+        await Tortoise.close_connections()
+        sys.exit('Y.A.A')
+
+
+async def main():
+    await Tortoise.init(
+        db_url='sqlite://db.sqlite3',
+        modules={'models': ['models']}
+    )
+
+    ma = BaseMenuGenerator()
+    await ma.menu()
 
 
 
-
+asyncio.run(main())
